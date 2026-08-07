@@ -22,11 +22,12 @@ class HomeController extends AbstractController
             }
             if (empty($errors)) {
                 $name = $url;
+                $url = trim($url, '/');
                 $url = str_replace(':', '%3A', $url);
                 $url = str_replace('/', '%2F', $url);
                 $client = HttpClient::create();
                 $response = $client->request('GET', self::API_URL . 'site?url=' . $url, [
-                    'timeout' => 60,
+                    'timeout' => 120,
                 ]);
                 $content = $response->toArray();
                 header('Location: /game?webPower=' . $content['statistics']['co2']['grid']['grams'] . '&name=' . $name . '#game');
